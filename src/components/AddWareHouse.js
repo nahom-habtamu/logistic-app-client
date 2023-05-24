@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useState } from 'react';
 import { CircularProgress } from '@mui/material';
 import { addWareHouse } from '../api/repository';
+
+import { AuthContext } from '../context/AuthContext';
 
 const AddWareHouse = (props) => {
 
@@ -13,10 +15,13 @@ const AddWareHouse = (props) => {
     const [address, setAddress] = useState("");
     const [loading, setLoading] = useState(false);
 
+    const { state } = useContext(AuthContext);
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        const result = await addWareHouse({ name, address, ['supplier-id']: supplierId }, "");
+        const result = await addWareHouse({ name, address, ['supplier-id']: supplierId }, state?.loggedInUser?.api_token);
         setLoading(false);
         props.onWareHouseAdded(result);
         props.closeModal();

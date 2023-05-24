@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { CircularProgress } from '@mui/material';
 import { addProduct } from '../api/repository';
+import { AuthContext } from '../context/AuthContext';
 
 const AddProduct = (props) => {
     const [name, setName] = useState("");
@@ -11,10 +12,12 @@ const AddProduct = (props) => {
     const [price, setPrice] = useState("");
     const [loading, setLoading] = useState(false);
 
+    const { state } = useContext(AuthContext);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        const result = await addProduct({ name, price, ['warehouse-id']: wareHouseId }, "");
+        const result = await addProduct({ name, price, ['warehouse-id']: wareHouseId }, state?.loggedInUser?.api_token);
         setLoading(false);
         props.onProductAdded(result);
         props.closeModal();

@@ -5,6 +5,7 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import "./index.css";
 
+import { ContextProvider } from "./context/AuthContext";
 import App from './pages/App';
 
 const root = ReactDOM.createRoot(
@@ -12,5 +13,7 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-    <App />
+    <ContextProvider value={500}>
+        <App />
+    </ContextProvider>
 );

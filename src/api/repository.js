@@ -1,5 +1,10 @@
 import axiosInstance from "./api";
 
+export const login = async (email, password) => {
+    let result = await axiosInstance.post("/login", { email, password });
+    return result.data;
+}
+
 export const fetchSuppliers = async (token) => {
     const config = {
         headers: {

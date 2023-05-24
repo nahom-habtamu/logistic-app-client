@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 import Tab from '@material-ui/core/Tab';
@@ -8,6 +8,8 @@ import TabPanel from '@material-ui/lab/TabPanel';
 import Suppliers from '../components/Suppliers';
 import Warehouses from '../components/Warehouses';
 import Products from '../components/Products';
+
+import { AuthContext } from '../context/AuthContext';
 
 import { fetchProducts, fetchSuppliers, fetchWareHouses } from '../api/repository';
 
@@ -19,6 +21,10 @@ const MainPage = () => {
     const [suppliers, setSuppliers] = useState([]);
     const [products, setProducts] = useState([]);
 
+
+    const { state } = useContext(AuthContext);
+
+
     const handleChange = (_, value) => {
         setActiveTabIndex(value);
     }
@@ -26,16 +32,16 @@ const MainPage = () => {
     useEffect(() => {
         const fetchAppropriateItems = async () => {
             if (activeTabIndex === "1") {
-                const result = await fetchSuppliers("");
+                const result = await fetchSuppliers(state?.loggedInUser?.api_token);
                 setSuppliers(result);
             }
             else if (activeTabIndex === "2") {
-                const result = await fetchWareHouses("");
+                const result = await fetchWareHouses(state?.loggedInUser?.api_token);
                 setWarehouses(result);
             }
 
             else if (activeTabIndex === "3") {
-                const result = await fetchProducts("");
+                const result = await fetchProducts(state?.loggedInUser?.api_token);
                 setProducts(result);
             }
         }
@@ -46,8 +52,8 @@ const MainPage = () => {
 
     return (
         <>
-            <Typography component="h1" variant="h1" textAlign='center' padding='15px'>
-                Welcome to Main Screen
+            <Typography component="h1" variant="h2" textAlign='center' padding='15px'>
+                Welcome to Main Screen {state.loggedInUser?.name}
             </Typography>
 
             <TabContext value={activeTabIndex} >

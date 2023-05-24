@@ -4,7 +4,23 @@ import { Switch, Route, HashRouter } from "react-router-dom";
 import MainPage, { MainPageRoute } from './MainPage';
 import LoginPage, { LoginPageRoute } from './LoginPage';
 
+import { useEffect, useContext } from 'react';
+
+import { AuthContext } from '../context/AuthContext.js';
+
 const App = () => {
+
+    const { login } = useContext(AuthContext);
+
+    useEffect(() => {
+        const savedUserData = localStorage.getItem('loggedInUser');
+        if (savedUserData) {
+            let parsed = JSON.parse(savedUserData);
+            login(parsed.email, parsed.password);
+        }
+    }, [])
+
+
     return (
         <HashRouter>
             <Switch>
