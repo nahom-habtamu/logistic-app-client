@@ -10,10 +10,9 @@ import Paper from '@mui/material/Paper';
 import CustomModal from './CustomModal';
 
 const Products = (props) => {
-
     return (
         <>
-            <CustomModal label="Product" />
+            <CustomModal label="Product" onProductAdded={props.onProductAdded} />
             <TableContainer component={Paper} style={{ border: '1px solid red', width: '50%', margin: '0 auto' }}>
                 <Table sx={{ maxWidth: 650 }} aria-label="simple table">
                     <TableHead>

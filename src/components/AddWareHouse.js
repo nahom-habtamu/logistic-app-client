@@ -3,18 +3,23 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useState } from 'react';
+import { CircularProgress } from '@mui/material';
+import { addWareHouse } from '../api/repository';
 
-const AddWareHouse = () => {
+const AddWareHouse = (props) => {
 
     const [name, setName] = useState("");
     const [supplierId, setSupplierId] = useState("");
     const [address, setAddress] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log({
-            name, supplierId, address
-        });
+        setLoading(true);
+        const result = await addWareHouse({ name, address, ['supplier-id']: supplierId }, "");
+        setLoading(false);
+        props.onWareHouseAdded(result);
+        props.closeModal();
     }
 
     return (
@@ -53,14 +58,19 @@ const AddWareHouse = () => {
                 onChange={(e) => setAddress(e.target.value)}
                 autoComplete="address"
             />
-            <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-            >
-                Add WareHouse
-            </Button>
+            {
+                loading ? <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <CircularProgress />
+                </div> :
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                    >
+                        Add WareHouse
+                    </Button>
+            }
         </Box>
     )
 }

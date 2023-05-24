@@ -2,17 +2,22 @@ import React, { useState } from 'react';
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import { addSupplier } from '../api/repository';
+import { CircularProgress } from '@mui/material';
 
-const AddSupplier = () => {
+const AddSupplier = (props) => {
 
     const [name, setName] = useState("");
     const [address, setAddress] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log({
-            name, address
-        });
+        setLoading(true);
+        const result = await addSupplier({ name, address }, "");
+        setLoading(false);
+        props.onSupplierAdded(result);
+        props.closeModal();
     }
 
     return (
@@ -40,14 +45,20 @@ const AddSupplier = () => {
                 onChange={(e) => setAddress(e.target.value)}
                 autoComplete="address"
             />
-            <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-            >
-                Add Supplier
-            </Button>
+            {
+                loading ? <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <CircularProgress />
+                </div> :
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                    >
+                        Add Supplier
+                    </Button>
+            }
+
         </Box>
     )
 }

@@ -9,6 +9,8 @@ import Suppliers from '../components/Suppliers';
 import Warehouses from '../components/Warehouses';
 import Products from '../components/Products';
 
+import { fetchProducts, fetchSuppliers, fetchWareHouses } from '../api/repository';
+
 const MainPage = () => {
 
     const [activeTabIndex, setActiveTabIndex] = useState("1");
@@ -22,7 +24,23 @@ const MainPage = () => {
     }
 
     useEffect(() => {
+        const fetchAppropriateItems = async () => {
+            if (activeTabIndex === "1") {
+                const result = await fetchSuppliers("");
+                setSuppliers(result);
+            }
+            else if (activeTabIndex === "2") {
+                const result = await fetchWareHouses("");
+                setWarehouses(result);
+            }
 
+            else if (activeTabIndex === "3") {
+                const result = await fetchProducts("");
+                setProducts(result);
+            }
+        }
+
+        fetchAppropriateItems();
     }, [activeTabIndex])
 
 
@@ -40,14 +58,23 @@ const MainPage = () => {
                         <Tab label="Products" value="3" />
                     </TabList>
                 </Box>
-                <TabPanel onClick={() => console.log("I AM CLICKED")} value="1">
-                    <Suppliers suppliers={suppliers} />
+                <TabPanel value="1">
+                    <Suppliers
+                        suppliers={suppliers}
+                        onSupplierAdded={(supplier) => setSuppliers([...suppliers, supplier])}
+                    />
                 </TabPanel>
                 <TabPanel value="2">
-                    <Warehouses warehouses={warehouses} />
+                    <Warehouses
+                        warehouses={warehouses}
+                        onWareHouseAdded={(warehouse) => setWarehouses([...warehouses, warehouse])}
+                    />
                 </TabPanel>
                 <TabPanel value="3">
-                    <Products warehouses={warehouses} />
+                    <Products
+                        products={products}
+                        onProductAdded={(product) => setProducts([...products, product])}
+                    />
                 </TabPanel>
             </TabContext>
         </>

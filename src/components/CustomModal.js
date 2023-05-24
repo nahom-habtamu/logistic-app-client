@@ -49,11 +49,20 @@ const CustomModal = (props) => {
 
                     {
                         props.label === "Product" ?
-                            <AddProduct />
+                            <AddProduct
+                                onProductAdded={props.onProductAdded}
+                                closeModal={handleClose}
+                            />
                             : props.label === "Warehouse" ?
-                                <AddWareHouse />
+                                <AddWareHouse
+                                    onWareHouseAdded={props.onWareHouseAdded}
+                                    closeModal={handleClose}
+                                />
                                 :
-                                <AddSupplier />
+                                <AddSupplier
+                                    onSupplierAdded={props.onSupplierAdded}
+                                    closeModal={handleClose}
+                                />
                     }
 
                 </Box>

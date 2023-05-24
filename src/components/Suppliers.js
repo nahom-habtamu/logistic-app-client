@@ -13,7 +13,7 @@ const Suppliers = (props) => {
 
     return (
         <>
-            <CustomModal label="Suppliers" />
+            <CustomModal label="Suppliers" onSupplierAdded={props.onSupplierAdded} />
             <TableContainer component={Paper} style={{ border: '1px solid red', width: '50%', margin: '0 auto' }}>
                 <Table sx={{ maxWidth: 650 }} aria-label="simple table">
                     <TableHead>
